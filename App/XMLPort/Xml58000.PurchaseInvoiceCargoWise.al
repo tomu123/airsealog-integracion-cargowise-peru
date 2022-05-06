@@ -30,6 +30,11 @@ xmlport 58000 "Purchase Invoice CargoWise"
                 fieldelement(TipoServicio;CabezeraFacturaCompra."Type of Service"){}
                 fieldelement(TipoOperacion;CabezeraFacturaCompra."Type of Operation"){}
                 fieldelement(FechaDetraccion;CabezeraFacturaCompra."Purch Date Detraction"){}
+                fieldelement(ApplyDocType;CabezeraFacturaCompra."Applies-to Doc. Type"){}
+                fieldelement(ApplyDocNo;CabezeraFacturaCompra."Applies-to Doc. No."){}
+                fieldelement(VendorCrMemoNo;CabezeraFacturaCompra."Vendor Cr. Memo No."){}
+                fieldelement(ApplyDocNoRef;CabezeraFacturaCompra."Applies-to Doc. No. Ref."){}
+                fieldelement(TextoRegistro2;CabezeraFacturaCompra."Posting Description"){}
                 tableelement(LineaFacturaCompra;"Purchase Doc. CargoWise Line"){
                     UseTemporary = true;
                     fieldelement(TipoCuenta;LineaFacturaCompra.Type){}

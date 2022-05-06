@@ -34,6 +34,9 @@ codeunit 58001 "Business Central Integration"
             if SalesDocCW."Legal Document" = '07' then begin
                 SalesH.Validate("Document Type" , SalesH."Document Type"::"Credit Memo");
                 SalesH.Validate("EB NC/ND Support Description" , SalesDocCW."EB NC/ND Support Description");
+                SalesH.Validate("Legal Property Type" , SalesDocCW."Legal Property Type");
+                SalesH.Validate("EB Motive discount code" , SalesDocCW."EB Motive discount code");
+                SalesH.Validate("EB NC/ND Description Type" , SalesDocCW."EB NC/ND Description Type");
                 case SalesDocCW."Applies-to Doc. Type" of
                     SalesH."Applies-to Doc. Type"::Payment.AsInteger():
                         SalesH.Validate("Applies-to Doc. Type" , SalesH."Applies-to Doc. Type"::Payment);
@@ -49,6 +52,7 @@ codeunit 58001 "Business Central Integration"
                         SalesH.Validate("Applies-to Doc. Type" , SalesH."Applies-to Doc. Type"::Reminder);
                 end;
                 SalesH.Validate("Applies-to Doc. No." , SalesDocCW."Applies-to Doc. No.");
+                // SalesH.Validate("Applies-to Doc. No. Ref." , SalesDocCW."Applies-to Doc. No. Ref.");
             end;
         end;
         SalesH."No." := '';
@@ -100,6 +104,11 @@ codeunit 58001 "Business Central Integration"
         SalesH.Validate("Shortcut Dimension 3 Code",SalesDocCW."Shortcut Dimension 3 Code");
         SalesH.Validate("Shortcut Dimension 1 Code",SalesDocCW."Shortcut Dimension 1 Code");
         SalesH.Validate("Shortcut Dimension 2 Code",SalesDocCW."Shortcut Dimension 2 Code");
+        if SalesDocCW."Legal Document" = '07' then begin
+            SalesH.Validate("Applies-to Doc. No. Ref." , SalesDocCW."Applies-to Doc. No. Ref.");
+            SalesH.Validate("Payment Method Code" , SalesDocCW."Payment Method Code");
+            SalesH.Validate("Posting No. Series" , 'V-NCF1+');
+        end;
         SalesH.Modify(true);
         Message('Modifico %1',SalesH."No.");
 
@@ -107,7 +116,12 @@ codeunit 58001 "Business Central Integration"
         SalesDocCWL.FindFirst();
         repeat begin
             SalesL.Init();
-            SalesL.Validate("Document Type",SalesL."Document Type"::Invoice);
+            case SalesDocCW."Legal Document" of
+                '01':
+                    SalesL.Validate("Document Type",SalesL."Document Type"::Invoice);
+                '07':
+                    SalesL.Validate("Document Type",SalesL."Document Type"::"Credit Memo");
+            end;
             SalesL.Validate("Document No.",SalesH."No.");
             SalesL.Validate("Line No.",SalesDocCWL."Line No.");
             SalesL.Validate(Type,SalesDocCWL.Type);
@@ -136,29 +150,30 @@ codeunit 58001 "Business Central Integration"
       Vendor: Record Vendor;
   begin
         PurchaseH.Init();
-        if PurchaseDocCW."Legal Document" = '01' then
-            PurchaseH.Validate("Document Type" , PurchaseH."Document Type"::Invoice)
-        else begin
-            if PurchaseDocCW."Legal Document" = '07' then begin
-                PurchaseH.Validate("Document Type" , PurchaseH."Document Type"::"Credit Memo");
-                case PurchaseDocCW."Applies-to Doc. Type" of
-                    PurchaseH."Applies-to Doc. Type"::Payment.AsInteger():
-                        PurchaseH.Validate("Applies-to Doc. Type" , PurchaseH."Applies-to Doc. Type"::Payment);
-                    PurchaseH."Applies-to Doc. Type"::"Credit Memo".AsInteger():
-                        PurchaseH.Validate("Applies-to Doc. Type" , PurchaseH."Applies-to Doc. Type"::"Credit Memo");
-                    PurchaseH."Applies-to Doc. Type"::Invoice.AsInteger():
-                        PurchaseH.Validate("Applies-to Doc. Type" , PurchaseH."Applies-to Doc. Type"::Invoice);
-                    PurchaseH."Applies-to Doc. Type"::Refund.AsInteger():
-                        PurchaseH.Validate("Applies-to Doc. Type" , PurchaseH."Applies-to Doc. Type"::Refund);
-                    PurchaseH."Applies-to Doc. Type"::"Finance Charge Memo".AsInteger():
-                        PurchaseH.Validate("Applies-to Doc. Type" , PurchaseH."Applies-to Doc. Type"::"Finance Charge Memo");
-                    PurchaseH."Applies-to Doc. Type"::Reminder.AsInteger():
-                        PurchaseH.Validate("Applies-to Doc. Type" , PurchaseH."Applies-to Doc. Type"::Reminder);
+        case PurchaseDocCW."Legal Document" of
+            '01','05','91','98':
+                PurchaseH.Validate("Document Type" , PurchaseH."Document Type"::Invoice);
+            '07','97':
+                begin
+                    PurchaseH.Validate("Document Type" , PurchaseH."Document Type"::"Credit Memo");
+                    case PurchaseDocCW."Applies-to Doc. Type" of
+                        PurchaseH."Applies-to Doc. Type"::Payment.AsInteger():
+                            PurchaseH.Validate("Applies-to Doc. Type" , PurchaseH."Applies-to Doc. Type"::Payment);
+                        PurchaseH."Applies-to Doc. Type"::"Credit Memo".AsInteger():
+                            PurchaseH.Validate("Applies-to Doc. Type" , PurchaseH."Applies-to Doc. Type"::"Credit Memo");
+                        PurchaseH."Applies-to Doc. Type"::Invoice.AsInteger():
+                            PurchaseH.Validate("Applies-to Doc. Type" , PurchaseH."Applies-to Doc. Type"::Invoice);
+                        PurchaseH."Applies-to Doc. Type"::Refund.AsInteger():
+                            PurchaseH.Validate("Applies-to Doc. Type" , PurchaseH."Applies-to Doc. Type"::Refund);
+                        PurchaseH."Applies-to Doc. Type"::"Finance Charge Memo".AsInteger():
+                            PurchaseH.Validate("Applies-to Doc. Type" , PurchaseH."Applies-to Doc. Type"::"Finance Charge Memo");
+                        PurchaseH."Applies-to Doc. Type"::Reminder.AsInteger():
+                            PurchaseH.Validate("Applies-to Doc. Type" , PurchaseH."Applies-to Doc. Type"::Reminder);
+                    end;
+                    PurchaseH.Validate("Applies-to Doc. No." , PurchaseDocCW."Applies-to Doc. No.");
+                    PurchaseH.Validate("Vendor Cr. Memo No.",PurchaseDocCW."Vendor Cr. Memo No.");
                 end;
-                PurchaseH.Validate("Applies-to Doc. No." , PurchaseDocCW."Applies-to Doc. No.");
-            end;
         end;
-        PurchaseH.Validate("Document Type" , PurchaseH."Document Type"::Invoice);
         PurchaseH."No." := '';
         PurchaseH.Validate("Buy-from Vendor No.",PurchaseDocCW."Buy-from Vendor No.");
         PurchaseH.Validate("Posting Date" , PurchaseDocCW."Posting Date");
@@ -180,14 +195,26 @@ codeunit 58001 "Business Central Integration"
         Message('Inserto %1',PurchaseH."No.");
         PurchaseH.Validate("Shortcut Dimension 1 Code",PurchaseDocCW."Shortcut Dimension 1 Code");
         PurchaseH.Validate("Shortcut Dimension 2 Code",PurchaseDocCW."Shortcut Dimension 2 Code");
-        PurchaseH.Modify();
+        case PurchaseDocCW."Legal Document" of
+            '07','97':
+                begin
+                    PurchaseH.Validate("Applies-to Doc. No. Ref." , PurchaseDocCW."Applies-to Doc. No. Ref.");
+                    PurchaseH.Validate("Posting Description",PurchaseDocCW."Posting Description");
+                end;
+        end;
+        PurchaseH.Modify(true);
         Message('Modifico %1',PurchaseH."No.");
 
         PurchaseDocCWL.SetRange("Document No.",PurchaseDocCW."No.");
         PurchaseDocCWL.FindFirst();
         repeat begin
             PurchaseL.Init();
-            PurchaseL.Validate("Document Type",PurchaseL."Document Type"::Invoice);
+            case PurchaseDocCW."Legal Document" of
+                '01','05','91','98':
+                    PurchaseL.Validate("Document Type",PurchaseL."Document Type"::Invoice);
+                '07','97':
+                    PurchaseL.Validate("Document Type",PurchaseL."Document Type"::"Credit Memo");
+            end;
             PurchaseL.Validate("Document No.",PurchaseH."No.");
             PurchaseL.Validate("Line No.",PurchaseDocCWL."Line No.");
             PurchaseL.Validate(Type,PurchaseDocCWL.Type);

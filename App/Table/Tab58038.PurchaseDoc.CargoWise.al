@@ -114,6 +114,21 @@ table 58038 "Purchase Doc. CargoWise"
             DataClassification = ToBeClassified;
             Caption = 'Applies-to Doc. No.', comment = 'ESM="Liq. por nº documento"';
         }
+        field(21; "Vendor Cr. Memo No."; Code[35])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Vendor Cr. Memo No.', comment = 'ESM="Nº nota crédito proveedor"';
+        }
+        field(22; "Applies-to Doc. No. Ref."; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Applies-to Doc. No. Ref.', Comment = 'ESM="Liq. por N° Documento Ref."';
+        }
+        field(23; "Posting Description"; Text[100])
+        {
+            Caption = 'Posting Description', comment = 'ESM="Texto de Registro"';
+            DataClassification = ToBeClassified;
+        }
         field(50; "No. Series"; Code[20])
         {
             Caption = 'No. Series';

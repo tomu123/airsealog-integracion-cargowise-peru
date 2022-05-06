@@ -165,6 +165,36 @@ table 58036 "Sales Doc. CargoWise"
             DataClassification = ToBeClassified;
             Caption = 'Applies-to Doc. No.', comment = 'ESM="Liq. por nº documento"';
         }
+        field(31; "Legal Property Type"; Code[10])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Legal Property Type', Comment = 'ESM="Tipo de bien"';
+        }
+        field(32; "EB Motive discount code"; Code[10])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Motive discount code', Comment = 'ESM="Cód. Motivo descuento"';
+        }
+        field(33; "EB NC/ND Description Type"; Code[10])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'NC/ND Description Type';
+        }
+        field(34; "Legal Document Ref."; Code[10])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Legal Document Ref.', Comment = 'ESM="Documento Legal Ref."';
+        }
+        field(35; "Applies-to Doc. No. Ref."; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Applies-to Doc. No. Ref.', Comment = 'ESM="Liq. por N° Documento Ref."';
+        }
+        field(36; "Payment Method Code"; Code[10])
+        {
+            Caption = 'Payment Method Code', comment = 'ESM="Cód. Forma de pago"';
+            DataClassification = ToBeClassified;
+        }
         field(50; "No. Series"; Code[20])
         {
             Caption = 'No. Series';

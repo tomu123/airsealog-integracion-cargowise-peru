@@ -42,6 +42,11 @@ xmlport 58002 "Sales Invoice CargoWise"
                 fieldelement(MotivoNotaCred;CabezeraFacturaVenta."EB NC/ND Support Description"){}
                 fieldelement(ApplyDocType;CabezeraFacturaVenta."Applies-to Doc. Type"){}
                 fieldelement(ApplyDocNo;CabezeraFacturaVenta."Applies-to Doc. No."){}
+                fieldelement(LegalPropertyType;CabezeraFacturaVenta."Legal Property Type"){}
+                fieldelement(MotiveDiscountCode;CabezeraFacturaVenta."EB Motive discount code"){}
+                fieldelement(DescriptionType;CabezeraFacturaVenta."EB NC/ND Description Type"){}
+                fieldelement(ApplyDocNoRef;CabezeraFacturaVenta."Applies-to Doc. No. Ref."){}
+                fieldelement(CodFormaPago;CabezeraFacturaVenta."Payment Method Code"){}
                 tableelement(LineaFacturaVenta;"Sales Doc. CargoWise Line"){
                     UseTemporary = true;
                     fieldelement(TipoCuenta;LineaFacturaVenta.Type){}
